@@ -1,27 +1,33 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Access-Control-Allow-Origin': '*'
-  })
-};
+import {AwsStatusResponse} from './aws-status-response.interface';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'app';
-  array = {};
+export class AppComponent implements OnInit {
+  title = 'Dashboard';
+  array: AwsStatusResponse;
 
 
   constructor(private http: HttpClient) {
-    this.array = this.getData();
   }
 
+  ngOnInit() {
+    this.getData();
+
+    setInterval(() => {
+      this.getData();
+    }, 20000);
+  }
 
   async getData() {
-    return this.http.get('http://localhost:3000/api/aws/').subscribe();
+    this.http.get('http://localhost:3000/api/aws').subscribe((res: AwsStatusResponse) => {
+       this.array = res;
+       console.log('HKW', this.array);
+     });
   }
 }

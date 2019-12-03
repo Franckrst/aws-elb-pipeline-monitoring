@@ -14,19 +14,11 @@ export class TableComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    const formattedList = this.formatList(this.list);
+    this.formattedList = Object.keys(this.list);
   }
 
-  formatList(list) {
-    for (const key of Object.keys(list)){
-      this.formattedList.push(key);
-    }
-    console.log(this.formattedList);
-    return this.formattedList;
-
-  }
   counter(i: number) {
-    return new Array(i);
+    return new Array(i).reverse();
   }
 
 }
