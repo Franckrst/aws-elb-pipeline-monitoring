@@ -41,7 +41,7 @@ const addState = (key: string,states: {[index:string]:{status : boolean}}) => {
    CRON
  */
 const INTERVAL = 60 * 1000;
-let CRON = async ()=>{
+let CRON = async () => {
     // ----------------------------------- PIPELINE ------------------------------------------------------------------------
     AWS.config.loadFromPath('./config/aws-prod.json');
     const pipeLine = async ()=> {
