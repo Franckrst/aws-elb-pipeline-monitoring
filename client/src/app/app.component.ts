@@ -10,7 +10,7 @@ import {AwsStatusResponse} from './aws-status-response.interface';
 })
 export class AppComponent implements OnInit {
   title = 'Dashboard';
-  array: AwsStatusResponse;
+  array: any;
 
 
   constructor(private http: HttpClient) {
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   }
 
   async getData() {
-    this.http.get('http://localhost:3000/api/aws').subscribe((res: AwsStatusResponse) => {
+    this.http.get('/api/aws').subscribe((res: AwsStatusResponse) => {
        this.array = res;
        console.log('HKW', this.array);
      });

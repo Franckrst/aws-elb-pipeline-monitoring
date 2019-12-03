@@ -71,12 +71,12 @@ let CRON = async () => {
         return healtStatus;
     };
 
-    AWS.config.loadFromPath('./config/aws-prod.json');
+    AWS.config.loadFromPath('../../config/aws-prod.json');
     await Promise.all([
         target().then((data)=>{addState('prod','targetGroups', data)}),
         pipeLine().then((data)=>{addState('prod','pipeLines', data)})
     ]);
-    AWS.config.loadFromPath('./config/aws-preprod.json');
+    AWS.config.loadFromPath('../../config/aws-preprod.json');
     await Promise.all([
         target().then((data)=>{addState('preprod','targetGroups', data)}),
         pipeLine().then((data)=>{addState('preprod','pipeLines', data)})
