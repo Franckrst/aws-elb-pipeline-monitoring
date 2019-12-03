@@ -1,0 +1,12 @@
+<table class="table">
+  <thead>
+  <th>{{headName}}</th>
+  <th *ngFor="let item of counter(30); let i = index">-{{i+1}}mn</th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let el of formattedList">
+    <td>{{el}}</td>
+    <td *ngFor="let status of list[el]">{{status.status}}</td>
+  </tr>
+  </tbody>
+</table>
