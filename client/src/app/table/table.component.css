@@ -1,0 +1,12 @@
+.point{
+  height: 20px;
+  width: 20px;
+}
+.vert{
+  border-radius: 50%;
+  background-color: green;
+}
+.rouge{
+  border-radius: 50%;
+  background-color: red;
+}

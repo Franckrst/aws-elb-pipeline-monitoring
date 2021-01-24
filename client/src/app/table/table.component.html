@@ -1,0 +1,29 @@
+<!--<table class="table">
+  <thead>
+  <th>{{headName}}</th>
+  <th *ngFor="let item of counter(30); let i = index">-{{i+1}}mn</th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let el of formattedList">
+    <td>{{el}}</td>
+    <td *ngFor="let status of list[el]">{{status.status}}</td>
+  </tr>
+  </tbody>
+</table>-->
+<div class="h3 col-11 m-auto text-uppercase" >{{headName}}</div>
+<div class="col-11 m-auto pb-3">
+
+  <div class="d-flex p-1 bd-highlight">
+    <div class="p-1 bd-highlight col-2">minutes</div>
+    <div class="flex-grow-1 justify-content-between d-flex flex-row-reverse">
+      <div class="p-1 bd-highlight" style="width: 6.66%; text-align: center" *ngFor="let item of counter(15); let i = index">-{{i+1}}</div>
+    </div>
+  </div>
+  <div *ngFor="let el of formattedList" class="d-flex">
+    <div class="d-flex p-0 col-2"> {{el.replace('ECS-TG-','')}} </div>
+    <div class="flex-grow-1 d-flex">
+      <div class="d-flex p-1 justify-content-center" style="width: 6.66%" *ngFor="let value of list[el]"> <div class="point" [ngClass]="{rouge:!value.status,vert:value.status}">&nbsp;</div> </div>
+    </div>
+  </div>
+
+</div>

@@ -3,13 +3,7 @@ import * as AWS from 'aws-sdk'
 import {CodePipeline, ELBv2} from "aws-sdk";
 
 const allStatus:
-    {
-        pipeLines : {[index:string]:any[]}
-        targetGroups : {[index:string]:any[]}
-    } = {
-    pipeLines : {},
-    targetGroups : {}
-};
+    {[index:string]:any} = {};
 export let controller = {
     get: async (req: Request, res: Response, next: NextFunction) => {
         res.json(allStatus);
@@ -29,12 +23,13 @@ export let controller = {
 };
 
 
-const addState = (key: string,states: {[index:string]:{status : boolean}}) => {
-    if(!allStatus[key]){allStatus[key] = {}}
+const addState = (env: string, key: string,states: {[index:string]:{status : boolean}}) => {
+    if(!allStatus[env]){allStatus[env] = {}}
+    if(!allStatus[env][key]){allStatus[env][key] = {}}
     for(let stateKey in states){
-        if(!allStatus[key][stateKey]){allStatus[key][stateKey] = []}
-        allStatus[key][stateKey].push(states[stateKey]);
-        allStatus[key][stateKey] = allStatus[key][stateKey].slice(-30);
+        if(!allStatus[env][key][stateKey]){allStatus[env][key][stateKey] = []}
+        allStatus[env][key][stateKey].push(states[stateKey]);
+        allStatus[env][key][stateKey] = allStatus[env][key][stateKey].slice(-15);
     }
 };
 /*
@@ -43,7 +38,6 @@ const addState = (key: string,states: {[index:string]:{status : boolean}}) => {
 const INTERVAL = 60 * 1000;
 let CRON = async () => {
     // ----------------------------------- PIPELINE ------------------------------------------------------------------------
-    AWS.config.loadFromPath('./config/aws-prod.json');
     const pipeLine = async ()=> {
         const pipeLinesStatus: {[index:string]:{status : boolean}} = {};
         const datapipeline = new AWS.CodePipeline();
@@ -77,9 +71,15 @@ let CRON = async () => {
         return healtStatus;
     };
 
+    AWS.config.loadFromPath('../../config/aws-prod.json');
     await Promise.all([
-        target().then((data)=>{addState('targetGroups', data)}),
-        pipeLine().then((data)=>{addState('pipeLines', data)})
+        target().then((data)=>{addState('prod','targetGroups', data)}),
+        pipeLine().then((data)=>{addState('prod','pipeLines', data)})
+    ]);
+    AWS.config.loadFromPath('../../config/aws-preprod.json');
+    await Promise.all([
+        target().then((data)=>{addState('preprod','targetGroups', data)}),
+        pipeLine().then((data)=>{addState('preprod','pipeLines', data)})
     ]);
 
 };
